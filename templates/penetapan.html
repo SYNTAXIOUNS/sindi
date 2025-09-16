@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+
+{% block title %}Penetapan Nomor Ijazah{% endblock %}
+
+{% block content %}
+<div class="card shadow p-4">
+    <h4 class="mb-4">📝 Penetapan Nomor Ijazah oleh Kanwil</h4>
+    <p>Silakan tetapkan nomor ijazah untuk data yang telah diverifikasi oleh Kankemenag.</p>
+
+    {% if data %}
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped align-middle">
+            <thead class="table-light">
+                <tr class="text-center">
+                    <th>ID</th>
+                    <th>Nama MDT</th>
+                    <th>Jenjang</th>
+                    <th>Tahun</th>
+                    <th>Jumlah</th>
+                    <th>File</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in data %}
+                <tr>
+                    <td class="text-center">{{ row['id'] }}</td>
+                    <td>{{ row['nama_mdt'] }}</td>
+                    <td class="text-center">{{ row['jenjang'] }}</td>
+                    <td class="text-center">{{ row['tahun'] }}</td>
+                    <td class="text-center">{{ row['jumlah_santri'] }}</td>
+                    <td class="text-center">
+                        <button class="btn btn-sm btn-outline-info" data-bs-toggle="modal" data-bs-target="#modalLihat" onclick="loadFile({{ row['id'] }})">👁 Lihat</button>
+                    </td>
+                    <td>
+                        <form method="POST">
+                            <input type="hidden" name="id" value="{{ row['id'] }}">
+                            <button type="submit" class="btn btn-sm btn-primary">✔ Tetapkan</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+        <div class="alert alert-info">Belum ada data yang diverifikasi.</div>
+    {% endif %}
+</div>
+
+<!-- MODAL PRATINJAU FILE -->
+<div class="modal fade" id="modalLihat" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">📄 Pratinjau File</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+      </div>
+      <div class="modal-body" id="modal-body-content">
+        <div class="text-center text-muted">Memuat data...</div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+<script>
+function loadFile(id) {
+    // Sediakan loading message dulu
+    document.getElementById('modal-body-content').innerHTML = "<div class='text-center text-muted'>🔄 Memuat data...</div>";
+
+    fetch(`/lihat_file/${id}?modal=true`)
+        .then(res => res.text())
+        .then(html => {
+            document.getElementById('modal-body-content').innerHTML = html;
+        })
+        .catch(err => {
+            document.getElementById('modal-body-content').innerHTML = "<div class='alert alert-danger'>❌ Gagal memuat file.</div>";
+        });
+}
+</script>
+
+{% endblock %}

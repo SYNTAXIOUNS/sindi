@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard Kanwil{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-9">
+        <div class="card shadow p-4">
+            <h4 class="mb-4">📊 Ringkasan Dashboard Kanwil</h4>
+
+            <!-- Header KPI -->
+            <div class="row text-center mb-4">
+                <div class="col-md-3">
+                    <div class="card bg-warning text-dark">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ menunggu_penetapan }}</h5>
+                            <p class="card-text">Menunggu Penetapan</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card bg-success text-white">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ ditetapkan_hari_ini }}</h5>
+                            <p class="card-text">Ditetapkan Hari Ini</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card bg-primary text-white">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ total_terbit_bulan_ini }}</h5>
+                            <p class="card-text">Nomor Terbit Bulan Ini</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card bg-info text-white">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ sla_penetapan }} hari</h5>
+                            <p class="card-text">SLA Penetapan</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <p class="text-muted">Silakan tetapkan nomor ijazah berdasarkan pengajuan yang diverifikasi.</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

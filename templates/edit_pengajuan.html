@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit Pengajuan Ijazah{% endblock %}
+
+{% block content %}
+<div class="card shadow p-4">
+    <h3 class="mb-4">✏️ Edit Ulang Pengajuan Ijazah</h3>
+    
+    <form method="POST" enctype="multipart/form-data">
+        <div class="row">
+            <div class="mb-3 col-md-6">
+                <label class="form-label">Nama MDT</label>
+                <input type="text" name="nama_mdt" class="form-control" value="{{ pengajuan['nama_mdt'] }}" required>
+            </div>
+            <div class="mb-3 col-md-6">
+                <label class="form-label">Jenjang</label>
+                <select name="jenjang" class="form-select" required>
+                    <option value="">Pilih...</option>
+                    <option value="Ula" {% if pengajuan['jenjang'] == 'Ula' %}selected{% endif %}>Ula</option>
+                    <option value="Wustha" {% if pengajuan['jenjang'] == 'Wustha' %}selected{% endif %}>Wustha</option>
+                    <option value="Ulya" {% if pengajuan['jenjang'] == 'Ulya' %}selected{% endif %}>Ulya</option>
+                    <option value="Al-Jami’ah" {% if pengajuan['jenjang'] == 'Al-Jami’ah' %}selected{% endif %}>Al-Jami’ah</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="mb-3 col-md-6">
+                <label class="form-label">Tahun</label>
+                <input type="text" name="tahun" class="form-control" value="{{ pengajuan['tahun'] }}" required>
+            </div>
+            <div class="mb-3 col-md-6">
+                <label class="form-label">Jumlah Santri</label>
+                <input type="number" name="jumlah_santri" class="form-control" value="{{ pengajuan['jumlah_santri'] }}" required>
+            </div>
+        </div>
+
+        <div class="mb-4">
+            <label class="form-label">Upload File Baru (opsional)</label>
+            <input type="file" name="file_lulusan" class="form-control">
+            <div class="form-text text-muted mt-1">Abaikan jika tidak ingin mengganti file lama.</div>
+        </div>
+
+        <button type="submit" class="btn btn-warning w-100">💾 Simpan Perubahan</button>
+    </form>
+
+    <div class="mt-4 text-end">
+        <a href="/dashboard_mdt" class="btn btn-secondary">← Kembali ke Dashboard</a>
+    </div>
+</div>
+{% endblock %}

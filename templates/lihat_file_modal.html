@@ -1,0 +1,29 @@
+<!-- lihat_file_modal.html -->
+<div class="card shadow-sm border-0 p-4">
+    <h5 class="mb-3"><strong>📄 Nama File:</strong> {{ filename }}</h5>
+
+    {% if data %}
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped small">
+            <thead class="table-light">
+                <tr>
+                    {% for h in data[0] if h != None %}
+                        <th>{{ h }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in data[1:] %}
+                    <tr>
+                        {% for cell in row if cell != None %}
+                            <td>{{ cell }}</td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+        <div class="alert alert-info">Data tidak tersedia atau file kosong.</div>
+    {% endif %}
+</div>

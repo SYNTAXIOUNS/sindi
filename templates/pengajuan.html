@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %}Pengajuan Ijazah{% endblock %}
+
+{% block content %}
+<div class="card shadow p-4">
+    <h4 class="mb-4">📝 Form Pengajuan Ijazah</h4>
+
+    <form method="POST" enctype="multipart/form-data">
+        <div class="mb-3">
+            <label class="form-label">Nama MDT</label>
+            <input type="text" name="nama_mdt" class="form-control">
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Jenjang</label>
+            <select name="jenjang" class="form-select" required>
+                <option value="">Pilih...</option>
+                <option value="Ula">Ula</option>
+                <option value="Wustha">Wustha</option>
+                <option value="Ulya">Ulya</option>
+                <option value="Al-Jami’ah">Al-Jami’ah</option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Tahun</label>
+            <input type="text" name="tahun" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Jumlah Santri</label>
+            <input type="number" name="jumlah_santri" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Upload File Lulusan</label>
+            <input type="file" name="file_lulusan" class="form-control" required>
+        </div>
+        <button type="submit" class="btn btn-primary w-100">📤 Kirim Pengajuan</button>
+    </form>
+
+    <div class="text-end mt-3">
+        <a href="{{ url_for('dashboard_mdt') }}" class="btn btn-secondary">← Kembali ke Dashboard</a>
+    </div>
+</div>
+{% endblock %}

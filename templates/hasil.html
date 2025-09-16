@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+
+{% block title %}Hasil Penetapan Ijazah{% endblock %}
+
+{% block content %}
+<div class="row">
+    <!-- Main Content -->
+    <div class="col-md-9">
+        <div class="card shadow p-4">
+            <h3 class="mb-4">📄 Daftar Hasil Penetapan Nomor Ijazah</h3>
+            <p>Selamat datang, <strong>{{ user }}</strong></p>
+
+            <!-- Filter Form -->
+            <form method="get" class="row g-3 mb-4">
+                <div class="col-md-3">
+                    <input type="text" name="nama" class="form-control" placeholder="Cari Nama MDT" value="{{ nama }}">
+                </div>
+                <div class="col-md-3">
+                    <select name="jenjang" class="form-select">
+                        <option value="">Semua Jenjang</option>
+                        <option value="Ula" {% if jenjang == 'Ula' %}selected{% endif %}>Ula</option>
+                        <option value="Wustha" {% if jenjang == 'Wustha' %}selected{% endif %}>Wustha</option>
+                        <option value="Ulya" {% if jenjang == 'Ulya' %}selected{% endif %}>Ulya</option>
+                        <option value="Al-Jami’ah" {% if jenjang == 'Al-Jami’ah' %}selected{% endif %}>Al-Jami’ah</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <input type="text" name="tahun" class="form-control" placeholder="Tahun" value="{{ tahun }}">
+                </div>
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-primary">🔍 Cari</button>
+                </div>
+            </form>
+
+            {% if data %}
+            <table class="table table-bordered table-striped align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>ID</th>
+                        <th>Nama MDT</th>
+                        <th>Jenjang</th>
+                        <th>Tahun</th>
+                        <th>Jumlah Santri</th>
+                        <th>Status</th>
+                        <th>Unduh Hasil</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in data %}
+                    <tr>
+                        <td>{{ row['id'] }}</td>
+                        <td>{{ row['nama_mdt'] }}</td>
+                        <td>{{ row['jenjang'] }}</td>
+                        <td>{{ row['tahun'] }}</td>
+                        <td>{{ row['jumlah_santri'] }}</td>
+                        <td>
+                            {% if row['status'] == 'ditetapkan' %}
+                                <span class="badge bg-success">Ditetapkan</span>
+                            {% elif row['status'] == 'dibatalkan' %}
+                                <span class="badge bg-danger">Dibatalkan</span><br>
+                                <small><strong>Alasan:</strong> {{ row['alasan_batal'] }}</small>
+                            {% else %}
+                                <span class="badge bg-secondary">{{ row['status'] }}</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if row['status'] == 'ditetapkan' %}
+                               <!-- Tambahkan tombol untuk buka modal -->
+                                <button class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#modalLihat" onclick="loadFile({{ row['id'] }})">
+                                    👁 Lihat
+                                </button>
+
+                                <a href="/unduh_excel/{{ row['id'] }}" class="btn btn-sm btn-success mb-1">⬇️ Excel</a>
+                                <a href="/unduh_pdf/{{ row['id'] }}" class="btn btn-sm btn-danger mb-1">📄 PDF</a>
+                            {% else %}
+                                <span class="text-muted">-</span>
+                            {% endif %}
+
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <nav class="mt-4">
+                <ul class="pagination justify-content-center">
+                    {% for p in range(1, total_pages + 1) %}
+                        <li class="page-item {% if p == page %}active{% endif %}">
+                            <a class="page-link" href="?page={{ p }}">{{ p }}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </nav>
+            {% else %}
+                <div class="alert alert-info">Belum ada hasil penetapan yang ditemukan untuk filter ini.</div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="modalLihat" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">📄 Isi File Lulusan</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body" id="modal-body-content">
+        <div class="text-center text-muted">Memuat data...</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Script JS untuk Load -->
+<script>
+  function loadFile(id) {
+    fetch(`/lihat_file/${id}?modal=true`)
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById('modal-body-content').innerHTML = html;
+      })
+      .catch(() => {
+        document.getElementById('modal-body-content').innerHTML = '<div class="alert alert-danger">Gagal memuat data.</div>';
+      });
+  }
+</script>
+
+
+{% endblock %}

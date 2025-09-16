@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block title %}Verifikasi Pengajuan Ijazah{% endblock %}
+
+{% block content %}
+<div class="row">
+
+    <!-- Main Content -->
+    <div class="col-md-9">
+        <div class="card shadow p-4">
+            <h4 class="mb-4">🔍 Verifikasi Pengajuan Ijazah</h4>
+            <p>Silakan verifikasi pengajuan dari MDT di bawah ini.</p>
+
+            {% if data %}
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped align-middle">
+                    <thead class="table-light">
+                        <tr class="text-center">
+                            <th>ID</th>
+                            <th>Nama MDT</th>
+                            <th>Jenjang</th>
+                            <th>Tahun</th>
+                            <th>Jumlah</th>
+                            <th>File</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in data %}
+                        <tr>
+                            <td class="text-center">{{ row['id'] }}</td>
+                            <td>{{ row['nama_mdt'] }}</td>
+                            <td class="text-center">{{ row['jenjang'] }}</td>
+                            <td class="text-center">{{ row['tahun'] }}</td>
+                            <td class="text-center">{{ row['jumlah_santri'] }}</td>
+                            <td class="text-center">
+                                <a href="{{ url_for('lihat_file', id=row['id']) }}" class="btn btn-sm btn-outline-primary">👁 Lihat</a>
+                            </td>
+                            <td>
+                                <form method="POST">
+                                    <input type="hidden" name="id_pengajuan" value="{{ row['id'] }}">
+                                    <div class="d-grid gap-2">
+                                        <button name="aksi" value="verifikasi" class="btn btn-sm btn-success">✔ Verifikasi</button>
+                                        <input name="alasan" class="form-control form-control-sm" placeholder="Alasan pembatalan">
+                                        <button name="aksi" value="batalkan" class="btn btn-sm btn-danger">❌ Batalkan</button>
+                                    </div>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+                <div class="alert alert-warning mt-3">Belum ada pengajuan yang perlu diverifikasi.</div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

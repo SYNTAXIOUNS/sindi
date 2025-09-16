@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard MDT{% endblock %}
+
+{% block content %}
+<div class="row">
+    <!-- Main Content -->
+    <div class="col-md-9">
+        <div class="card shadow p-4">
+            <h4 class="mb-4">📊 Ringkasan Dashboard MDT</h4>
+
+            <!-- Header KPI -->
+            <div class="row text-center mb-4">
+                <div class="col-md-3">
+                    <div class="card bg-primary text-white">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ pengajuan_total }}</h5>
+                            <p class="card-text">Pengajuan Bulan Ini</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card bg-warning text-white">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ pengajuan_menunggu }}</h5>
+                            <p class="card-text">Menunggu Verifikasi</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card bg-danger text-white">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ pengajuan_revisi }}</h5>
+                            <p class="card-text">Perlu Revisi</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card bg-success text-white">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ pengajuan_ditetapkan }}</h5>
+                            <p class="card-text">Ditetapkan</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tabel Utama -->
+            <h5 class="mt-4">📄 Daftar Pengajuan Saya</h5>
+            {% if data %}
+            <div class="table-responsive">
+                <table class="table table-bordered align-middle table-hover">
+                    <thead class="table-light">
+                        <tr class="text-center">
+                            <th>ID</th>
+                            <th>Tahun</th>
+                            <th>Jenjang</th>
+                            <th>Jumlah</th>
+                            <th>Status</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in data %}
+                        <tr>
+                            <td class="text-center">{{ row['id'] }}</td>
+                            <td class="text-center">{{ row['tahun'] }}</td>
+                            <td class="text-center">{{ row['jenjang'] }}</td>
+                            <td class="text-center">{{ row['jumlah_santri'] }}</td>
+                            <td class="text-center">
+                                {% if row['status'] == 'diajukan' %}
+                                    <span class="badge bg-warning">Diajukan</span>
+                                {% elif row['status'] == 'diverifikasi' %}
+                                    <span class="badge bg-success">Diverifikasi</span>
+                                {% elif row['status'] == 'dibatalkan' %}
+                                    <span class="badge bg-danger">Revisi</span>
+                                {% elif row['status'] == 'ditetapkan' %}
+                                    <span class="badge bg-primary">Ditetapkan</span>
+                                {% else %}
+                                    <span class="badge bg-secondary">Draft</span>
+                                {% endif %}
+                            </td>
+                            <td class="text-center">
+                                <a href="{{ url_for('lihat_file', id=row['id']) }}" class="btn btn-sm btn-outline-info">👁</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+                <div class="alert alert-info mt-4">Belum ada pengajuan, silakan buat pengajuan baru.</div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

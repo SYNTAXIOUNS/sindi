@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard Kankemenag{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-9">
+        <div class="card shadow p-4">
+            <h4 class="mb-4">📊 Ringkasan Dashboard Kankemenag</h4>
+
+            <!-- Header KPI -->
+            <div class="row text-center mb-4">
+                <div class="col-md-3">
+                    <div class="card bg-primary text-white">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ pengajuan_masuk }}</h5>
+                            <p class="card-text">Pengajuan Masuk</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card bg-danger text-white">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ revisi_diajukan }}</h5>
+                            <p class="card-text">Diajukan Revisi</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card bg-success text-white">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ diverifikasi }}</h5>
+                            <p class="card-text">Diverifikasi</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card bg-warning text-dark">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ verifikasi_sla }} hari</h5>
+                            <p class="card-text">SLA Rata-rata</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <p class="text-muted">Silakan lakukan verifikasi terhadap pengajuan yang masuk.</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
