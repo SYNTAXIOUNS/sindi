@@ -220,5 +220,18 @@ def uploaded_file(filename):
 def inject_now():
     return {'now': lambda: datetime.now()}
 
+# MIGRASI OTOMATIS JIKA BELUM ADA KOLUMNYA
+with get_db() as conn:
+    try:
+        conn.execute("ALTER TABLE pengajuan ADD COLUMN created_at TEXT")
+        print("✅ Kolom created_at berhasil ditambahkan.")
+    except sqlite3.OperationalError:
+        print("⚠️ Kolom created_at sudah ada.")
+    try:
+        conn.execute("ALTER TABLE pengajuan ADD COLUMN updated_at TEXT")
+        print("✅ Kolom updated_at berhasil ditambahkan.")
+    except sqlite3.OperationalError:
+        print("⚠️ Kolom updated_at sudah ada.")
+
 if __name__ == '__main__':
     app.run(debug=True)
